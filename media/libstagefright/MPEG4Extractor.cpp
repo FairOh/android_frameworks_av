@@ -3092,6 +3092,10 @@ status_t MPEG4Source::read(
                 mBuffer->meta_data()->setInt32(kKeyIsSyncFrame, 1);
             }
 
+            if (!(mSampleTable->isSyncTableValid())) { /* no stss table */
+                mBuffer->meta_data()->setInt32(kKeyIsFakeSync, 1);
+            }
+
             ++mCurrentSampleIndex;
         }
 
@@ -3212,6 +3216,10 @@ status_t MPEG4Source::read(
 
         if (isSyncSample) {
             mBuffer->meta_data()->setInt32(kKeyIsSyncFrame, 1);
+        }
+
+        if (!(mSampleTable->isSyncTableValid())) { /* no stss table */
+            mBuffer->meta_data()->setInt32(kKeyIsFakeSync, 1);
         }
 
         ++mCurrentSampleIndex;
