@@ -869,9 +869,7 @@ void SoftAVCEncoder::onQueueFilled(OMX_U32 portIndex) {
 
         // Encode an input video frame
         CHECK(encoderStatus == AVCENC_SUCCESS || encoderStatus == AVCENC_NEW_IDR);
-        memcpy(outPtr, "\x00\x00\x00\x01", 4);
-        outPtr += 4;
-        dataLength = outHeader->nAllocLen - 4;  // Reset the output buffer length
+        dataLength = outHeader->nAllocLen;  // Reset the output buffer length
         if (inHeader->nFilledLen > 0) {
             encoderStatus = PVAVCEncodeNAL(mHandle, outPtr, &dataLength, &type);
             if (encoderStatus == AVCENC_SUCCESS) {
@@ -916,7 +914,7 @@ void SoftAVCEncoder::onQueueFilled(OMX_U32 portIndex) {
         if (mSawInputEOS) {
             outHeader->nFlags |= OMX_BUFFERFLAG_EOS;
         }
-        outHeader->nFilledLen = dataLength ? dataLength + 4 : 0;
+        outHeader->nFilledLen = dataLength;
         outInfo->mOwnedByUs = false;
         notifyFillBufferDone(outHeader);
         mInputBufferInfoVec.erase(mInputBufferInfoVec.begin());
