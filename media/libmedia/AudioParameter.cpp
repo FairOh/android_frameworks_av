@@ -38,6 +38,7 @@ AudioParameter::AudioParameter(const String8& keyValuePairs)
     char *str = new char[keyValuePairs.length()+1];
     char *last;
     mKeyValuePairs = keyValuePairs;
+    char *last;
 
     strcpy(str, keyValuePairs.string());
     char *pair = strtok_r(str, ";", &last);
